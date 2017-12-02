@@ -16,7 +16,7 @@
     }
     IISConfigUnlock     = @{
         Version    = '0.1.0'
-        DependsOn  = 'PreferenceVariables'
+        DependsOn  = @('PreferenceVariables', 'IISAdministration')
         Parameters = @{
             Repository = 'christianacca-ps'
         }
