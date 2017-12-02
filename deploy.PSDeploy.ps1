@@ -20,7 +20,7 @@ if ($ENV:BHProjectName -and $ENV:BHProjectName.Count -eq 1)
     Deploy Module {
         By PSGalleryModule {
             FromSource output\$ENV:BHProjectName
-            To PSGallery
+            To $ENV:PublishRepo
             WithOptions @{
                 ApiKey = $ENV:NugetApiKey
             }
