@@ -14,6 +14,7 @@ Set-Item Env:\PublishRepo -Value $publishRepository
 if (-not(Get-PSRepository -Name $publishRepository -EA SilentlyContinue))
 {
     Write-Output "  Registering custom PS Repository '$publishRepository'"
+    Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
     Import-Module PowerShellGet
     
     $repo = @{
