@@ -1,0 +1,9 @@
+site_name: IISSiteInstall
+repo_url: https://github.com/christianacca/IISSiteInstall
+theme: readthedocs
+pages:
+  - Home: index.md
+  - IISSiteInstall Basics:
+    - What is IISSiteInstall: about.md
+    - Quick Start: Quick-Start-Installation-and-Example.md
+  - Acknowledgements: acknowledgements.md
