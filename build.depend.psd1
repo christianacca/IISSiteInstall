@@ -1,6 +1,7 @@
 @{ 
     PSDependOptions  = @{ 
-        Target = 'CurrentUser'
+        Target    = '$DependencyPath/_build-cache/'
+        AddToPath = $true
     }
     InvokeBuild      = '4.1.0'
     PSDeploy         = '0.2.2'
