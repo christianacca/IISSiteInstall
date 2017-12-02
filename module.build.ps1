@@ -11,6 +11,7 @@ $script:TestFile = "$PSScriptRoot\output\TestResults_PS$PSVersion`_$TimeStamp.xm
 Task Default Build, Pester, UpdateSource, Publish
 Task Build CopyToOutput, BuildPSM1, BuildPSD1
 Task Pester Build, ImportModule, UnitTests, FullTests
+Task FullTests BeforeFullTests, RunFullTests
 
 Task Clean {
     $null = Remove-Item $Output -Recurse -ErrorAction Ignore
@@ -25,7 +26,11 @@ Task UnitTests {
     }
 }
 
-Task FullTests {
+Task BeforeFullTests {
+    Remove-IISSite 'Default Web Site' -Confirm:$false
+}
+
+Task RunFullTests {
     $TestResults = Invoke-Pester -Path Tests -PassThru -OutputFormat NUnitXml -OutputFile $testFile
     if ($TestResults.FailedCount -gt 0)
     {
