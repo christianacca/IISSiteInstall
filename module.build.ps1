@@ -27,7 +27,7 @@ Task UnitTests {
 }
 
 Task BeforeFullTests {
-    Remove-IISSite 'Default Web Site' -Confirm:$false
+    Remove-IISSite 'Default Web Site' -WarningAction SilentlyContinue -Confirm:$false
 }
 
 Task RunFullTests {
