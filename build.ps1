@@ -8,7 +8,7 @@ Derived from scripts written by Warren F. (RamblingCookieMonster)
 param ($Task = 'Default')
 Write-Output "Starting build"
 
-if (-not (Get-PackageProvider -Name Nuget))
+if (-not (Get-PackageProvider -Name Nuget -EA SilentlyContinue))
 {
     Write-Output '  Installing the latest version of PS package provider'
     Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
