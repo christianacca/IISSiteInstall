@@ -16,19 +16,7 @@ if (-not (Get-PackageProvider -Name Nuget -EA SilentlyContinue))
 
 # Register custom PS Repo (currently required for forked vs of PSDepend)
 $dependenciesRepository = 'christianacca-ps'
-if (-not(Get-PSRepository -Name $dependenciesRepository -EA SilentlyContinue))
-{
-    Write-Output "  Registering custom PS Repository '$dependenciesRepository'"    
-    $repo = @{
-        Name                  = $dependenciesRepository
-        SourceLocation        = "https://www.myget.org/F/$dependenciesRepository/api/v2"
-        ScriptSourceLocation  = "https://www.myget.org/F/$dependenciesRepository/api/v2/"
-        PublishLocation       = "https://www.myget.org/F/$dependenciesRepository/api/v2/package"
-        ScriptPublishLocation = "https://www.myget.org/F/$dependenciesRepository/api/v2/package/"
-        InstallationPolicy    = 'Trusted'
-    }
-    Register-PSRepository @repo
-}
+.\build-helpers\Register-PSRepositoryIfMissing $dependenciesRepository
 
 # todo: publish to PSGallery
 Set-Item Env:\PublishRepo -Value $dependenciesRepository

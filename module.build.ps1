@@ -115,10 +115,11 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
             $command.parameters[$parameter].aliases | Foreach-Object { '{0}:{1}' -f $command.name, $_}
         }
     }
-     
-    if (Test-Path .\fingerprint)
+    
+    $fingerprintPath = "$PSScriptRoot\build-helpers\fingerprint"
+    if (Test-Path $fingerprintPath)
     {
-        $oldFingerprint = Get-Content .\fingerprint
+        $oldFingerprint = Get-Content $fingerprintPath
     }
      
     $bumpVersionType = 'Patch'
@@ -127,7 +128,7 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     '    Detecting breaking changes'
     $oldFingerprint | Where {$_ -notin $fingerprint } | % {$bumpVersionType = 'Major'; "      $_"}
  
-    Set-Content -Path .\fingerprint -Value $fingerprint
+    Set-Content -Path $fingerprintPath -Value $fingerprint
  
     # Bump the module version
     $version = [version] (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')
