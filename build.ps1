@@ -12,11 +12,6 @@ Write-Output "Starting build"
 $dependenciesRepository = 'christianacca-ps'
 if (-not(Get-PSRepository -Name $dependenciesRepository -EA SilentlyContinue))
 {
-    Write-Output '  Installing the latest version of PS package provider'
-    # todo: detect when a newer vs of PS package provider needs to be installed
-    #       then move this install to top level of build script
-    Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
-
     Write-Output "  Registering custom PS Repository '$dependenciesRepository'"
     Import-Module PowerShellGet
     
