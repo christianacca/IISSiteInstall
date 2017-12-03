@@ -8,13 +8,17 @@ Derived from scripts written by Warren F. (RamblingCookieMonster)
 param ($Task = 'Default')
 Write-Output "Starting build"
 
+if (-not (Get-PackageProvider -Name Nuget))
+{
+    Write-Output '  Installing the latest version of PS package provider'
+    Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
+}
+
 # Register custom PS Repo (currently required for forked vs of PSDepend)
 $dependenciesRepository = 'christianacca-ps'
 if (-not(Get-PSRepository -Name $dependenciesRepository -EA SilentlyContinue))
 {
-    Write-Output "  Registering custom PS Repository '$dependenciesRepository'"
-    Import-Module PowerShellGet
-    
+    Write-Output "  Registering custom PS Repository '$dependenciesRepository'"    
     $repo = @{
         Name                  = $dependenciesRepository
         SourceLocation        = 'https://www.myget.org/F/christianacca-ps/api/v2'
