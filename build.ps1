@@ -10,7 +10,7 @@ Write-Output "Starting build"
 
 if (-not (Get-PackageProvider -Name Nuget -EA SilentlyContinue))
 {
-    Write-Output '  Installing the latest version of PS package provider'
+    Write-Output '  Installing Nuget PS package provider'
     Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 }
 
@@ -21,10 +21,10 @@ if (-not(Get-PSRepository -Name $dependenciesRepository -EA SilentlyContinue))
     Write-Output "  Registering custom PS Repository '$dependenciesRepository'"    
     $repo = @{
         Name                  = $dependenciesRepository
-        SourceLocation        = 'https://www.myget.org/F/christianacca-ps/api/v2'
-        ScriptSourceLocation  = 'https://www.myget.org/F/christianacca-ps/api/v2/'
-        PublishLocation       = 'https://www.myget.org/F/christianacca-ps/api/v2/package'
-        ScriptPublishLocation = 'https://www.myget.org/F/christianacca-ps/api/v2/package/'
+        SourceLocation        = "https://www.myget.org/F/$dependenciesRepository/api/v2"
+        ScriptSourceLocation  = "https://www.myget.org/F/$dependenciesRepository/api/v2/"
+        PublishLocation       = "https://www.myget.org/F/$dependenciesRepository/api/v2/package"
+        ScriptPublishLocation = "https://www.myget.org/F/$dependenciesRepository/api/v2/package/"
         InstallationPolicy    = 'Trusted'
     }
     Register-PSRepository @repo
