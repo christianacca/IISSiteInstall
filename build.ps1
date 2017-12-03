@@ -8,17 +8,20 @@ Derived from scripts written by Warren F. (RamblingCookieMonster)
 param ($Task = 'Default')
 Write-Output "Starting build"
 
-# Register repo (used to publish)
-$publishRepository = 'christianacca-ps'
-Set-Item Env:\PublishRepo -Value $publishRepository
-if (-not(Get-PSRepository -Name $publishRepository -EA SilentlyContinue))
+# Register custom PS Repo (currently required for forked vs of PSDepend)
+$dependenciesRepository = 'christianacca-ps'
+if (-not(Get-PSRepository -Name $dependenciesRepository -EA SilentlyContinue))
 {
-    Write-Output "  Registering custom PS Repository '$publishRepository'"
+    Write-Output '  Installing the latest version of PS package provider'
+    # todo: detect when a newer vs of PS package provider needs to be installed
+    #       then move this install to top level of build script
     Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
+
+    Write-Output "  Registering custom PS Repository '$dependenciesRepository'"
     Import-Module PowerShellGet
     
     $repo = @{
-        Name                  = $publishRepository
+        Name                  = $dependenciesRepository
         SourceLocation        = 'https://www.myget.org/F/christianacca-ps/api/v2'
         ScriptSourceLocation  = 'https://www.myget.org/F/christianacca-ps/api/v2/'
         PublishLocation       = 'https://www.myget.org/F/christianacca-ps/api/v2/package'
@@ -28,12 +31,15 @@ if (-not(Get-PSRepository -Name $publishRepository -EA SilentlyContinue))
     Register-PSRepository @repo
 }
 
+# todo: publish to PSGallery
+Set-Item Env:\PublishRepo -Value $dependenciesRepository
+
 # Grab nuget bits, install modules, set build variables, start build.
 Write-Output "  Install And Import Dependent Modules"
 Write-Output "    Build Modules"
 if (-not(Get-InstalledModule PSDepend -RequiredVersion 0.1.56.3 -EA SilentlyContinue))
 {
-    Install-Module PSDepend -RequiredVersion 0.1.56.3 -Repository $publishRepository
+    Install-Module PSDepend -RequiredVersion 0.1.56.3 -Repository $dependenciesRepository
 }
 Invoke-PSDepend -Path "$PSScriptRoot\build.depend.psd1" -Install -Import -Force
 
