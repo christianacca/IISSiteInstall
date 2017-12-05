@@ -10,7 +10,7 @@ Write-Output "Starting build"
 
 if (-not (Get-PackageProvider -Name Nuget -EA SilentlyContinue))
 {
-    Write-Output '  Installing Nuget PS package provider'
+    Write-Output '  Install Nuget PS package provider'
     Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 }
 
