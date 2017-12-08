@@ -1,11 +1,13 @@
 ﻿$projectRoot = Resolve-Path "$PSScriptRoot\.."
 $modulePath = Resolve-Path "$projectRoot\*\*.psd1"
 $moduleRoot = Split-Path $modulePath
-$moduleName = Split-Path $moduleRoot -Leaf
+
+$moduleName = $env:BHProjectName
+$moduleRoot = $env:BHModulePath
 
 Describe "General project validation: $moduleName"  -Tag Build, Unit {
 
-    $scripts = Get-ChildItem $projectRoot -Include *.ps1, *.psm1, *.psd1 -Recurse
+    $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse
 
     # TestCases are splatted to the script so we need hashtables
     $testCase = $scripts | Foreach-Object {@{file = $_}}         
@@ -20,12 +22,7 @@ Describe "General project validation: $moduleName"  -Tag Build, Unit {
         $errors.Count | Should Be 0
     }
 
-    It "Module '$moduleName' can import cleanly" {
-        {Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force } | Should Not Throw
-    }
-
-    It 'Module auto-imports dependencies' {
-
+    It "Module '$moduleName' auto-imports dependencies" {
         # given...
 
         # Ensure module and it's dependencies NOT already loaded into memory
@@ -40,10 +37,8 @@ Describe "General project validation: $moduleName"  -Tag Build, Unit {
         Set-Item -Path Env:\PSModulePath -Value "$installPath;$($env:PSModulePath)"
 
 
-        # when
-        Import-Module $modulePath
-
-        # then
+        # when / then
+        {Import-Module ($global:SUTPath) } | Should Not Throw
         Get-Module IISAdministration | Should -Not -Be $null
         Get-Module PreferenceVariables | Should -Not -Be $null
         Get-Module IISSecurity | Should -Not -Be $null

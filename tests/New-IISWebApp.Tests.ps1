@@ -1,9 +1,3 @@
-$modulePath = Resolve-Path "$PSScriptRoot\..\*\*.psd1"
-$moduleName = Split-Path (Split-Path $modulePath) -Leaf
-
-Get-Module $moduleName -All | Remove-Module
-Import-Module $modulePath
-
 $testSiteName = 'DeleteMeSite'
 $testAppPoolName = "$testSiteName-AppPool"
 
@@ -19,6 +13,10 @@ Describe 'New-IISWebApp' {
     }
 
     BeforeAll {
+
+        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Import-Module ($global:SUTPath)
+
         # given
         $sitePath = "$TestDrive\$testSiteName"
         New-CaccaIISWebsite $testSiteName $sitePath -Force -AppPoolName $testAppPoolName

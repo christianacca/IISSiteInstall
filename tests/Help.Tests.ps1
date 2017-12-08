@@ -1,7 +1,11 @@
-$projectRoot = Resolve-Path "$PSScriptRoot\.."
-$script:ModuleName = 'IISSiteInstall'
+$moduleName = $env:BHProjectName
 
 Describe "Help tests for $moduleName" -Tags Build {
+
+    BeforeAll {
+        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Import-Module ($global:SUTPath)
+    }
 
     $functions = Get-Command -Module $moduleName
     $help = $functions | % {Get-Help $_.name}

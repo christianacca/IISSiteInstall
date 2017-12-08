@@ -1,9 +1,3 @@
-$modulePath = Resolve-Path "$PSScriptRoot\..\*\*.psd1"
-$moduleName = Split-Path (Split-Path $modulePath) -Leaf
-
-Get-Module $moduleName -All | Remove-Module
-Import-Module $modulePath
-
 $testSiteName = 'DeleteMeSite'
 $tempAppPool = 'TestAppPool'
 $tempAppPoolUsername = "IIS AppPool\$tempAppPool"
@@ -19,9 +13,11 @@ Describe 'Remove-IISAppPool' {
             Where-Object { $_.IsInherited -eq $false -and $_.IdentityReference -eq $Username }
     }
 
-    # AfterEach {
-    #     Reset-IISServerManager -Confirm:$false
-    # }
+
+    BeforeAll {
+        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Import-Module ($global:SUTPath)
+    }
 
     It 'Should throw if pool does not exist' {
         {Remove-CaccaIISAppPool 'DoesNotExist' -EA Stop} | Should Throw

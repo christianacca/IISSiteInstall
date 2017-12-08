@@ -1,8 +1,6 @@
-$modulePath = Resolve-Path "$PSScriptRoot\..\*\*.psd1"
-$moduleName = Split-Path (Split-Path $modulePath) -Leaf
-
+$moduleName = $env:BHProjectName
 Get-Module $moduleName -All | Remove-Module
-Import-Module $modulePath
+Import-Module ($global:SUTPath)
 
 
 InModuleScope $moduleName {

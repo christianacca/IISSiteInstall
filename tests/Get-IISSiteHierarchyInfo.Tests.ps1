@@ -1,9 +1,3 @@
-$modulePath = Resolve-Path "$PSScriptRoot\..\*\*.psd1"
-$moduleName = Split-Path (Split-Path $modulePath) -Leaf
-
-Get-Module $moduleName -All | Remove-Module
-Import-Module $modulePath
-
 . "$PSScriptRoot\Compare-ObjectProperties.ps1"
 
 $testSiteName = 'DeleteMeSite'
@@ -12,6 +6,11 @@ $tempAppPool = "$testSiteName-AppPool"
 
 
 Describe 'Get-IISSiteHierarchyInfo' {
+
+    BeforeAll {
+        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Import-Module ($global:SUTPath)
+    }
 
     Context 'Site only' {
 

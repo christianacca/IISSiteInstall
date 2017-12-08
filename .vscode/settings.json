@@ -3,7 +3,8 @@
   "powershell.codeFormatting.openBraceOnSameLine": false,
   "powershell.codeFormatting.newLineAfterOpenBrace": true,
   "powershell.codeFormatting.preset": "Allman",
-  "editor.formatOnSave": true,
+  "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.ps1",
+  "editor.formatOnSave": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 4,
   "[json]": {

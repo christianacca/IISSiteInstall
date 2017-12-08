@@ -1,13 +1,12 @@
-$modulePath = Resolve-Path "$PSScriptRoot\..\*\*.psd1"
-$moduleName = Split-Path (Split-Path $modulePath) -Leaf
-
-Get-Module $moduleName -All | Remove-Module
-Import-Module $modulePath
-
 $testSiteName = 'DeleteMeSite'
 $tempAppPool = 'TestAppPool'
 
 Describe 'New-IISAppPool' {
+
+    BeforeAll {
+        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Import-Module ($global:SUTPath)
+    }
 
     Context 'App pool does not already exist' {
         BeforeEach {
