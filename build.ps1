@@ -31,10 +31,12 @@ Set-Item Env:\PublishRepo -Value $dependenciesRepository
 # Grab nuget bits, install modules, set build variables, start build.
 Write-Output "  Install And Import Dependent Modules"
 Write-Output "    Build Modules"
-if (-not(Get-InstalledModule PSDepend -RequiredVersion 0.1.56.3 -EA SilentlyContinue))
+$psDependVersion = '0.1.56.5'
+if (-not(Get-InstalledModule PSDepend -RequiredVersion $psDependVersion -EA SilentlyContinue))
 {
-    Install-Module PSDepend -RequiredVersion 0.1.56.3 -Repository $dependenciesRepository
+    Install-Module PSDepend -RequiredVersion $psDependVersion -Repository $dependenciesRepository
 }
+Import-Module PSDepend -RequiredVersion $psDependVersion
 Invoke-PSDepend -Path "$PSScriptRoot\build.depend.psd1" -Install -Import -Force
 
 Write-Output "    SUT Modules"
