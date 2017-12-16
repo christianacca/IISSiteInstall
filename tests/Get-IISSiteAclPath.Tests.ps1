@@ -12,7 +12,7 @@ Describe 'Get-IISSiteAclPath' {
     BeforeAll {
         Unload-SUT
         Import-Module ($global:SUTPath)
-        $tempAspNetPathCount = Get-CaccaTempAspNetFilesPaths | measure | select -Exp Count
+        $tempAspNetPathCount = Get-CaccaTempAspNetFilesPath | measure | select -Exp Count
     }
 
     AfterAll {
@@ -47,7 +47,7 @@ Describe 'Get-IISSiteAclPath' {
             $paths = Get-CaccaIISSiteAclPath $testSiteName | select -Exp Path -Skip 1
             
             # then
-            $expected = Get-CaccaTempAspNetFilesPaths
+            $expected = Get-CaccaTempAspNetFilesPath
             $paths | Should -Be $expected
         }
     }
@@ -291,9 +291,9 @@ Describe 'Get-IISSiteAclPath' {
                 }
                 $expected = @(
                     $site1Path + @{ IsShared = $false; Path = $TestDrive }
-                    Get-CaccaTempAspNetFilesPaths | % { $site1Path + @{ IsShared = $true; Path = $_ } }
+                    Get-CaccaTempAspNetFilesPath | % { $site1Path + @{ IsShared = $true; Path = $_ } }
                     $site2Path + @{ IsShared = $false; Path = "$TestDrive\Site2" }
-                    Get-CaccaTempAspNetFilesPaths | % { $site2Path + @{ IsShared = $true; Path = $_ } }
+                    Get-CaccaTempAspNetFilesPath | % { $site2Path + @{ IsShared = $true; Path = $_ } }
                 ) | % { [PsCustomObject] $_ }
 
                 ($paths | measure).Count | Should -Be ($expected.Count)
@@ -322,7 +322,7 @@ Describe 'Get-IISSiteAclPath' {
                 }
                 $expected = @(
                     $site1Path + @{ IsShared = $false; Path = $TestDrive }
-                    Get-CaccaTempAspNetFilesPaths | % { $site1Path + @{ IsShared = $true; Path = $_ } }
+                    Get-CaccaTempAspNetFilesPath | % { $site1Path + @{ IsShared = $true; Path = $_ } }
                 ) | % { [PsCustomObject] $_ }
 
                 ($paths | Where Path -eq "$TestDrive\Site2" | measure).Count | Should -Be 0

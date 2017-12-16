@@ -59,7 +59,7 @@ Describe 'New-IISWebsite' {
         }
 
         $sitePath | % $checkAccess
-        Get-CaccaTempAspNetFilesPaths | % $checkAccess
+        Get-CaccaTempAspNetFilesPath | % $checkAccess
     }
 
     It "-Path" {
@@ -130,7 +130,7 @@ Describe 'New-IISWebsite' {
         $appPool | Get-CaccaIISAppPoolUsername | Should -Be $domainQualifiedTestLocalUser
         & {
             $tempSitePath
-            Get-CaccaTempAspNetFilesPaths
+            Get-CaccaTempAspNetFilesPath
         } | % {
             $identities = (Get-Acl $_).Access.IdentityReference
             $identities | ? { $_.Value -eq $domainQualifiedTestLocalUser } | Should -Not -BeNullOrEmpty

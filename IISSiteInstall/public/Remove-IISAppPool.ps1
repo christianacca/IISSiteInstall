@@ -99,7 +99,7 @@ function Remove-IISAppPool {
                 $allAclPaths += $sitesAclPaths
             }
             if ($isNonSharedIdentity) {
-                $allAclPaths += Get-CaccaTempAspNetFilesPaths | ForEach-Object {
+                $allAclPaths += Get-CaccaTempAspNetFilesPath | ForEach-Object {
                     [PsCustomObject] @{
                         Path = $_
                         IdentityReference = $appPoolUsername

@@ -64,7 +64,7 @@ Describe 'Remove-IISWebApp' {
 
         It 'Should NOT remove file permissions to Temp ASP.Net files folder' {
             # then
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ $testAppPoolUsername | Should -Not -BeNullOrEmpty
             }
         }
@@ -106,7 +106,7 @@ Describe 'Remove-IISWebApp' {
 
         It 'Should remove file permissions to Temp ASP.Net files folder' {
             # then
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ $appPoolSid | Should -BeNullOrEmpty
             }
         }
@@ -145,7 +145,7 @@ Describe 'Remove-IISWebApp' {
 
         It 'Should remove file permissions to Temp ASP.Net files folder' {
             # then
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ $domainQualifiedTestLocalUser | Should -BeNullOrEmpty
             }
         }

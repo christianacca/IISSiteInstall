@@ -66,7 +66,7 @@ Describe 'Remove-IISWebsite' {
             # then
             & {
                 $TestDrive
-                Get-CaccaTempAspNetFilesPaths
+                Get-CaccaTempAspNetFilesPath
             } | % {
                 GetAppPoolPermission $_ $testAppPoolUsername | Should -BeNullOrEmpty
             }   
@@ -113,7 +113,7 @@ Describe 'Remove-IISWebsite' {
             # then
             & {
                 $TestDrive
-                Get-CaccaTempAspNetFilesPaths
+                Get-CaccaTempAspNetFilesPath
             } | % {
                 GetAppPoolPermission $_ $domainQualifiedTestLocalUser | Should -BeNullOrEmpty
             }   
@@ -220,7 +220,7 @@ Describe 'Remove-IISWebsite' {
 
         It 'Should remove App pool file permissions only on non-shared folders' {
             # then
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ $test2AppPoolUsername | Should -Not -BeNullOrEmpty
             }
             GetAppPoolPermission $TestDrive $testAppPoolUsername | Should -BeNullOrEmpty

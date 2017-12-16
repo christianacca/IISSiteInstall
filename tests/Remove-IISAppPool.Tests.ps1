@@ -31,13 +31,13 @@ Describe 'Remove-IISAppPool' {
         BeforeEach {
             # given
             New-CaccaIISAppPool $tempAppPool
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 icacls ("$_") /grant:r ("$tempAppPoolUsername" + ':(OI)(CI)R') | Out-Null
             }
 
             # we need to work with SID's rather than friendly usernames, as friendly names are not available once
             # app pool is deleted
-            $tempAspFilePath = (Get-CaccaTempAspNetFilesPaths)[0]
+            $tempAspFilePath = (Get-CaccaTempAspNetFilesPath)[0]
             $appPoolSid = (GetAppPoolPermission $tempAspFilePath $tempAppPoolUsername).IdentityReference | % {
                 $_.Translate([System.Security.Principal.SecurityIdentifier]).Value
             }
@@ -56,7 +56,7 @@ Describe 'Remove-IISAppPool' {
             Remove-CaccaIISAppPool $tempAppPool
 
             # then
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ $appPoolSid | Should -BeNullOrEmpty
             }
         }
@@ -67,7 +67,7 @@ Describe 'Remove-IISAppPool' {
 
             # then
             Get-IISAppPool $tempAppPool | Should -Not -BeNullOrEmpty
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ $tempAppPoolUsername | Should -Not -BeNullOrEmpty
             }
 
@@ -108,7 +108,7 @@ Describe 'Remove-IISAppPool' {
             # then
             Get-IISAppPool $tempAppPool -WA SilentlyContinue | Should -BeNullOrEmpty
             GetAppPoolPermission $TestDrive $appPoolSid | Should -BeNullOrEmpty
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ $appPoolSid | Should -BeNullOrEmpty
             }
         }

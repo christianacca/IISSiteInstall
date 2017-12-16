@@ -15,7 +15,7 @@ function Get-IISSiteAclPathHelper
         $ErrorActionPreference = 'Stop'
 
         $allSiteInfos = Get-IISSiteHierarchyInfo
-        $tempAspNetFilesPaths = Get-CaccaTempAspNetFilesPaths
+        $tempAspNetFilesPaths = Get-CaccaTempAspNetFilesPath
     }
     
     process

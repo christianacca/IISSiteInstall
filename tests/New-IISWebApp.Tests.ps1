@@ -66,7 +66,7 @@ Describe 'New-IISWebApp' {
 
         It 'Should assign specific user file permissions to Temp ASP.Net files folders' {
             # then
-            Get-CaccaTempAspNetFilesPaths | % {
+            Get-CaccaTempAspNetFilesPath | % {
                 GetAppPoolPermission $_ "IIS AppPool\$testAppPoolName" | Should -Not -BeNullOrEmpty
             }
         }
@@ -307,7 +307,7 @@ Describe 'New-IISWebApp' {
     
             It 'Should assign specific user file permissions to Temp ASP.Net files folders' {
                 # then
-                Get-CaccaTempAspNetFilesPaths | % {
+                Get-CaccaTempAspNetFilesPath | % {
                     GetAppPoolPermission $_ $domainQualifiedTestLocalUser | Should -Not -BeNullOrEmpty
                 }
             }
