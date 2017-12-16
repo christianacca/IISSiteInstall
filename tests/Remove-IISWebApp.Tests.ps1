@@ -15,7 +15,7 @@ Describe 'Remove-IISWebApp' {
 
     BeforeAll {
 
-        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Unload-SUT
         Import-Module ($global:SUTPath)
 
         # given
@@ -25,6 +25,7 @@ Describe 'Remove-IISWebApp' {
 
     AfterAll {
         Remove-CaccaIISWebsite $testSiteName -Confirm:$false
+        Unload-SUT
     }
 
     It 'Should not throw if website does not exist' {

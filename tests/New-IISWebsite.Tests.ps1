@@ -1,5 +1,5 @@
 $moduleName = $env:BHProjectName
-Get-Module $moduleName -All | Remove-Module
+Unload-SUT
 Import-Module ($global:SUTPath)
 
 $testSiteName = 'DeleteMeSite'

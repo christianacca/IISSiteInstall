@@ -10,9 +10,13 @@ $test2AppPoolUsername = "IIS AppPool\$test2AppPoolName"
 Describe 'Get-IISSiteAclPath' {
 
     BeforeAll {
-        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Unload-SUT
         Import-Module ($global:SUTPath)
         $tempAspNetPathCount = Get-CaccaTempAspNetFilesPaths | measure | select -Exp Count
+    }
+
+    AfterAll {
+        Unload-SUT
     }
 
     Context 'Site only' {

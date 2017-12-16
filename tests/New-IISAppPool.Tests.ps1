@@ -4,8 +4,12 @@ $tempAppPool = 'TestAppPool'
 Describe 'New-IISAppPool' {
 
     BeforeAll {
-        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Unload-SUT
         Import-Module ($global:SUTPath)
+    }
+
+    AfterAll {
+        Unload-SUT
     }
 
     Context 'App pool does not already exist' {

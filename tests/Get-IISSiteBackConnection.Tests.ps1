@@ -1,5 +1,5 @@
 $moduleName = $env:BHProjectName
-Get-Module $moduleName -All | Remove-Module
+Unload-SUT
 Import-Module ($global:SUTPath)
 
 InModuleScope $moduleName {
@@ -10,6 +10,11 @@ InModuleScope $moduleName {
     $test2SiteName = 'DeleteMeSite2'
 
     Describe 'Get-IISSiteBackConnection' {
+
+        AfterAll {
+            Unload-SUT
+        }
+
         Context 'One Website' {
             
             BeforeAll {

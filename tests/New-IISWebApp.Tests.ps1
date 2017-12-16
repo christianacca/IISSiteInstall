@@ -14,7 +14,7 @@ Describe 'New-IISWebApp' {
 
     BeforeAll {
 
-        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Unload-SUT
         Import-Module ($global:SUTPath)
 
         # given
@@ -24,6 +24,7 @@ Describe 'New-IISWebApp' {
 
     AfterAll {
         Remove-CaccaIISWebsite $testSiteName -Confirm:$false
+        Unload-SUT
     }
 
     Context 'With defaults' {

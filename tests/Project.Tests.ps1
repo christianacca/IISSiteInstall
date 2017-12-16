@@ -23,19 +23,9 @@ Describe "General project validation: $moduleName"  -Tag Build, Unit {
     }
 
     It "Module '$moduleName' auto-imports dependencies" {
-        # given...
-
+        # given
         # Ensure module and it's dependencies NOT already loaded into memory
-        Get-Module $moduleName -All | Remove-Module -Force
-        Get-Module IISSecurity -All | Remove-Module -Force
-        Get-Module HostNameUtils -All | Remove-Module -Force
-        Get-Module IISAdministration -All | Remove-Module -Force
-        Get-Module PreferenceVariables -All | Remove-Module -Force
-
-        # we've lost the environment variable set by PSDepend (not sure why)... restoring
-        $installPath = Resolve-Path "$PSScriptRoot\..\_build-cache\"
-        Set-Item -Path Env:\PSModulePath -Value "$installPath;$($env:PSModulePath)"
-
+        Unload-SUT
 
         # when / then
         {Import-Module ($global:SUTPath) } | Should Not Throw

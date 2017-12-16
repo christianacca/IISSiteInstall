@@ -1,9 +1,13 @@
 $moduleName = $env:BHProjectName
-Get-Module $moduleName -All | Remove-Module
+Unload-SUT
 Import-Module ($global:SUTPath)
 
 InModuleScope $moduleName {
     Describe 'Remove-IISSiteHostsFileEntry' {
+
+        AfterAll {
+            Unload-SUT
+        }
         
         BeforeEach {
             Mock Remove-TecBoxHostnames

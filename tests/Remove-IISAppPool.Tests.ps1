@@ -15,8 +15,12 @@ Describe 'Remove-IISAppPool' {
 
 
     BeforeAll {
-        Get-Module ($env:BHProjectName) -All | Remove-Module
+        Unload-SUT
         Import-Module ($global:SUTPath)
+    }
+
+    AfterAll {
+        Unload-SUT
     }
 
     It 'Should throw if pool does not exist' {

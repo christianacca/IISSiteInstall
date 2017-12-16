@@ -31,7 +31,7 @@ Set-Item Env:\PublishRepo -Value $dependenciesRepository
 # Grab nuget bits, install modules, set build variables, start build.
 Write-Output "  Install And Import Dependent Modules"
 Write-Output "    Build Modules"
-$psDependVersion = '0.1.56.5'
+$psDependVersion = '0.1.58.1'
 if (-not(Get-InstalledModule PSDepend -RequiredVersion $psDependVersion -EA SilentlyContinue))
 {
     Install-Module PSDepend -RequiredVersion $psDependVersion -Repository $dependenciesRepository
@@ -47,6 +47,7 @@ if (-not (Get-Item env:\BH*))
     Set-BuildEnvironment
 }
 $global:SUTPath = $env:BHPSModuleManifest
+. "$PSScriptRoot\tests\Unload-SUT.ps1"
 
 if ($Task -eq 'init') 
 {
