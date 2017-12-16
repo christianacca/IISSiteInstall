@@ -99,7 +99,6 @@ function New-IISWebApp
         [string] $Name,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
         [string] $Path,
 
         [Parameter(ValueFromPipelineByPropertyName)]
