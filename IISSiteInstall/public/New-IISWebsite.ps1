@@ -28,13 +28,14 @@ function New-IISWebsite
     The physcial path of the Website. Defaults to using "C:\inetpub\sites\$Name". Path will be created if missing.
     
     .PARAMETER Port
-    The port number to use for the default site binding
+    The port number to use for the default site binding. Defaults to 80
     
     .PARAMETER Protocol
-    The protocol to use for the default site binding
+    The protocol to use for the default site binding. Defaults to 'http'
     
     .PARAMETER HostName
-    The Hostname to use for the default site binding
+    Optional hostname to use for the default site binding.
+    See also 'HostsFileIPAddress' and 'AddHostToBackConnections' parameters
     
     .PARAMETER Config
     A script block that will receive the instance of the Website being created
@@ -58,7 +59,8 @@ function New-IISWebsite
     Resolve hostname(s) used by the site bindings to an IP address (stores a record in the hosts file on this computer)
     
     .PARAMETER AddHostToBackConnections
-    Register hostname(s) used by the site bindings to bypass the loopback security check
+    Register hostname(s) used by the site bindings as a BackConnection registry entry to bypass the loopback security 
+    check for this name(s)
     
     .PARAMETER Force
     Overwrite any existing Website?
