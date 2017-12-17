@@ -39,14 +39,12 @@ function Set-IISAppPoolUser {
     Create an pool with an identity assigned to a specific user account
     
     #>
-    [CmdletBinding(DefaultParameterSetName='None')]
+    [CmdletBinding()]
     param (
-        [Parameter(Mandatory, ParameterSetName = 'SpecificUser', Position = 0)]
         [PsCredential] $Credential,
 
-        [Parameter(Mandatory, ParameterSetName = 'CommonIdentity', Position = 0)]
-        [ValidateSet('ApplicationPoolIdentity', 'LocalService', 'LocalSystem', 'NetworkService')]
-        [string] $IdentityType,
+        [ValidateSet('ApplicationPoolIdentity', 'LocalService', 'LocalSystem', 'NetworkService', 'SpecificUser')]
+        [string] $IdentityType = 'SpecificUser',
 
         [Parameter(Mandatory, ValueFromPipeline)]
         [ValidateNotNull()]
@@ -61,6 +59,10 @@ function Set-IISAppPoolUser {
         $callerEA = $ErrorActionPreference
         $ErrorActionPreference = 'Stop'
 
+        if ($IdentityType -eq 'SpecificUser' -and !$Credential) {
+            throw "A Credential for 'SpecificUser' must be supplied"
+        }
+
         if (!$PSBoundParameters.ContainsKey('Commit')) {
             $Commit = $true
         }
@@ -69,7 +71,7 @@ function Set-IISAppPoolUser {
     process {
         try {
 
-            if ($PSCmdlet.ParameterSetName -eq 'CommonIdentity') {
+            if ($IdentityType -ne 'SpecificUser') {
                 $dummyPassword = ConvertTo-SecureString 'dummy' -AsPlainText -Force
                 $username = ConvertTo-BuiltInUsername $IdentityType ($InputObject.Name)
                 $Credential = [PsCredential]::new($username, $dummyPassword)

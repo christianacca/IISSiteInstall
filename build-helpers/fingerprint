@@ -143,10 +143,10 @@ New-CaccaIISAppPool:OutBuffer
 New-CaccaIISAppPool:ob
 New-CaccaIISAppPool:PipelineVariable
 New-CaccaIISAppPool:pv
-New-CaccaIISAppPool:WhatIf
-New-CaccaIISAppPool:wi
 New-CaccaIISAppPool:Confirm
 New-CaccaIISAppPool:cf
+New-CaccaIISAppPool:WhatIf
+New-CaccaIISAppPool:wi
 New-CaccaIISWebApp:SiteName
 New-CaccaIISWebApp:Name
 New-CaccaIISWebApp:Path
