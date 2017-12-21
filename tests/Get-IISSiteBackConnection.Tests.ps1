@@ -9,7 +9,7 @@ InModuleScope $moduleName {
     $testSiteName = 'DeleteMeSite'
     $test2SiteName = 'DeleteMeSite2'
 
-    Describe 'Get-IISSiteBackConnection' {
+    Describe 'Get-IISSiteBackConnection' -Tags Build {
 
         AfterAll {
             Unload-SUT

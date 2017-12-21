@@ -5,7 +5,7 @@ $test2SiteName = 'DeleteMeSite2'
 $tempAppPool = "$testSiteName-AppPool"
 
 
-Describe 'Get-IISSiteHierarchyInfo' {
+Describe 'Get-IISSiteHierarchyInfo' -Tags Build {
 
     BeforeAll {
         Unload-SUT

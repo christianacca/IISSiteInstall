@@ -3,7 +3,7 @@ Unload-SUT
 Import-Module ($global:SUTPath)
 
 InModuleScope $moduleName {
-    Describe 'Remove-IISSiteHostsFileEntry' {
+    Describe 'Remove-IISSiteHostsFileEntry' -Tags Build {
 
         AfterAll {
             Unload-SUT

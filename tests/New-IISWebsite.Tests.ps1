@@ -8,7 +8,7 @@ $testAppPoolUsername = "IIS AppPool\$testAppPoolName"
 $sitePath = "C:\inetpub\sites\$testSiteName"
 
 
-Describe 'New-IISWebsite' {
+Describe 'New-IISWebsite' -Tags Build {
 
     function Cleanup {
         Reset-IISServerManager -Confirm:$false
@@ -246,7 +246,7 @@ Describe 'New-IISWebsite' {
 
 InModuleScope $moduleName {
 
-    Describe 'New-IISWebsite' -Tag Unit {
+    Describe 'New-IISWebsite' -Tags Build, Unit {
 
         Context '-AddHostToBackConnections' {
 

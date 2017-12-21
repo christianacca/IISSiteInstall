@@ -9,7 +9,7 @@ InModuleScope $moduleName {
     $testSiteName = 'DeleteMeSite'
     $test2SiteName = 'DeleteMeSite2'
 
-    Describe 'Get-IISWebsiteHostsFileEntry' {
+    Describe 'Get-IISWebsiteHostsFileEntry' -Tags Build {
 
         AfterAll {
             Unload-SUT

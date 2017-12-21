@@ -11,7 +11,7 @@ $test2AppPoolUsername = "IIS AppPool\$test2SiteName-AppPool"
 $childAppPool = "MyApp-AppPool"
 
 
-Describe 'Remove-IISWebsite' {
+Describe 'Remove-IISWebsite' -Tags Build {
 
     function GetAppPoolPermission {
         param(
@@ -232,7 +232,7 @@ Describe 'Remove-IISWebsite' {
     
 InModuleScope $moduleName {
     
-    Describe 'Remove-IISWebsite' -Tag Unit {
+    Describe 'Remove-IISWebsite' -Tags Build, Unit {
     
         BeforeAll {
             # given

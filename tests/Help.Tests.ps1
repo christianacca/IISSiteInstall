@@ -1,6 +1,6 @@
 $moduleName = $env:BHProjectName
 
-Describe "Help tests for $moduleName" -Tags Build {
+Describe "Help tests for $moduleName" -Tag Build {
 
     BeforeAll {
         Unload-SUT

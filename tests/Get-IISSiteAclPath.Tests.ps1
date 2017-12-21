@@ -7,7 +7,7 @@ $test2AppPoolName = "$test2SiteName-AppPool"
 $testAppPoolUsername = "IIS AppPool\$testAppPoolName"
 $test2AppPoolUsername = "IIS AppPool\$test2AppPoolName"
 
-Describe 'Get-IISSiteAclPath' {
+Describe 'Get-IISSiteAclPath' -Tags Build {
 
     BeforeAll {
         Unload-SUT

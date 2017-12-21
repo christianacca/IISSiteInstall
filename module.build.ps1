@@ -12,7 +12,6 @@ $global:SUTPath = $script:ManifestPath
 Task Default Build, Pester, UpdateSource, Publish
 Task Build CopyToOutput, BuildPSM1, BuildPSD1
 Task Pester Build, UnitTests, FullTests
-Task FullTests BeforeFullTests, RunFullTests
 
 Task Clean {
     $null = Remove-Item $Output -Recurse -ErrorAction Ignore
@@ -27,12 +26,12 @@ Task UnitTests {
     }
 }
 
-Task BeforeFullTests {
+Task RemoveDefaultWebsite -Before UnitTests {
     Remove-IISSite 'Default Web Site' -WarningAction SilentlyContinue -Confirm:$false
 }
 
-Task RunFullTests {
-    $TestResults = Invoke-Pester -Path Tests -PassThru -OutputFormat NUnitXml -OutputFile $testFile
+Task FullTests {
+    $TestResults = Invoke-Pester -Path Tests -PassThru -OutputFormat NUnitXml -OutputFile $testFile -Tag Build
     if ($TestResults.FailedCount -gt 0)
     {
         Write-Error "Failed [$($TestResults.FailedCount)] Pester tests"
@@ -88,7 +87,7 @@ Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
 }
 
 Task NextPSGalleryVersion -if (-Not ( Test-Path "$output\version.xml" ) ) -Before BuildPSD1 {
-    $galleryVersion = Get-NextPSGalleryVersion -Name $ModuleName -Repository $ENV:PublishRepo
+    $galleryVersion = Get-NextPSGalleryVersion -Name $ModuleName -Repository ($env:PublishRepository)
     $galleryVersion | Export-Clixml -Path "$output\version.xml"
 }
 
@@ -121,11 +120,10 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
             $command.parameters[$parameter].aliases | Foreach-Object { '{0}:{1}' -f $command.name, $_}
         }
     }
-    
-    $fingerprintPath = "$PSScriptRoot\build-helpers\fingerprint"
-    if (Test-Path $fingerprintPath)
+     
+    if (Test-Path .\fingerprint)
     {
-        $oldFingerprint = Get-Content $fingerprintPath
+        $oldFingerprint = Get-Content .\fingerprint
     }
      
     $bumpVersionType = 'Patch'
@@ -134,7 +132,7 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     '    Detecting breaking changes'
     $oldFingerprint | Where {$_ -notin $fingerprint } | % {$bumpVersionType = 'Major'; "      $_"}
  
-    Set-Content -Path $fingerprintPath -Value $fingerprint
+    Set-Content -Path .\fingerprint -Value $fingerprint
  
     # Bump the module version
     $version = [version] (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')

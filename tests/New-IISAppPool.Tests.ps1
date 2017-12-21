@@ -1,7 +1,7 @@
 $testSiteName = 'DeleteMeSite'
 $tempAppPool = 'TestAppPool'
 
-Describe 'New-IISAppPool' {
+Describe 'New-IISAppPool' -Tags Build {
 
     BeforeAll {
         Unload-SUT

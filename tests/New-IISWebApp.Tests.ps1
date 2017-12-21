@@ -1,7 +1,7 @@
 $testSiteName = 'DeleteMeSite'
 $testAppPoolName = "$testSiteName-AppPool"
 
-Describe 'New-IISWebApp' {
+Describe 'New-IISWebApp' -Tags Build {
 
     function GetAppPoolPermission {
         param(

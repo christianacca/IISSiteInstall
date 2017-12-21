@@ -4,7 +4,7 @@ Import-Module ($global:SUTPath)
 
 
 InModuleScope $moduleName {
-    Describe 'Remove-IISSiteBackConnection' {
+    Describe 'Remove-IISSiteBackConnection' -Tags Build {
 
         AfterAll {
             Unload-SUT

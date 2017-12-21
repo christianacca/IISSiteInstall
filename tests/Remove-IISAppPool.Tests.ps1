@@ -2,7 +2,7 @@ $testSiteName = 'DeleteMeSite'
 $tempAppPool = 'TestAppPool'
 $tempAppPoolUsername = "IIS AppPool\$tempAppPool"
 
-Describe 'Remove-IISAppPool' {
+Describe 'Remove-IISAppPool' -Tags Build {
 
     function GetAppPoolPermission {
         param(
