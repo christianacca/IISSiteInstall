@@ -6,7 +6,7 @@
     PreferenceVariables = '1.0'
     IISAdministration   = '1.1.0.0'
     HostNameUtils       = @{
-        Version    = '1.0.0'
+        Version    = '1.0.2'
         Parameters = @{
             Repository = 'christianacca-ps'
         }

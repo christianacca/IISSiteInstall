@@ -55,7 +55,7 @@ RequiredModules = @(
     @{ModuleName='PreferenceVariables'; ModuleVersion='1.0'; MaximumVersion = '1.999.0';}
     @{ModuleName='IISAdministration'; ModuleVersion='1.1.0.0'; MaximumVersion = '1.999.0.0';},
     @{ModuleName='IISSecurity'; ModuleVersion='0.1.0'; MaximumVersion = '0.1.999';},
-    @{ModuleName='HostNameUtils'; ModuleVersion='1.0.0'; MaximumVersion = '1.999.0';})
+    @{ModuleName='HostNameUtils'; ModuleVersion='1.0.2'; MaximumVersion = '1.999.0';})
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
