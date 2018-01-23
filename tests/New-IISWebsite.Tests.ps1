@@ -7,19 +7,21 @@ $testAppPoolName = "$testSiteName-AppPool"
 $testAppPoolUsername = "IIS AppPool\$testAppPoolName"
 $sitePath = "C:\inetpub\sites\$testSiteName"
 
+$testSiteNameSpaces = 'Delete MeSite'
+$testAppPoolNameSpaces = "$testSiteNameSpaces-AppPool"
+$testAppPoolUsernameSpaces = "IIS AppPool\$testAppPoolNameSpaces"
+$sitePathSpaces = "C:\inetpub\sites\$testSiteNameSpaces"
 
 Describe 'New-IISWebsite' -Tags Build {
 
     function Cleanup {
         Reset-IISServerManager -Confirm:$false
-        $siteToDelete = Get-IISSite $testSiteName -WA SilentlyContinue
-        if ($siteToDelete) {
-            Remove-CaccaIISWebsite $testSiteName -Confirm:$false
-            Remove-Item ($siteToDelete.Applications['/'].VirtualDirectories['/'].PhysicalPath) -Recurse -Confirm:$false
+        $siteToDelete = @(Get-IISSite $testSiteName, $testSiteNameSpaces -WA SilentlyContinue)
+        $siteToDelete | ForEach-Object {
+            Remove-CaccaIISWebsite $_.Name -Confirm:$false
+            Remove-Item ($_.Applications['/'].VirtualDirectories['/'].PhysicalPath) -Recurse -Confirm:$false
         }
-        if (Test-Path $sitePath) {
-            Remove-Item $sitePath -Recurse -Confirm:$false
-        }
+        @($sitePath, $sitePathSpaces) | ? { Test-Path $_ } | Remove-Item -Recurse -Confirm:$false
         Get-LocalUser 'PesterTestUser-*' | Remove-LocalUser
     }
 
@@ -59,6 +61,30 @@ Describe 'New-IISWebsite' -Tags Build {
         }
 
         $sitePath | % $checkAccess
+        Get-CaccaTempAspNetFilesPath | % $checkAccess
+    }
+    
+    It "-Name (with spaces)" {
+        # when
+        New-CaccaIISWebsite $testSiteNameSpaces
+
+        # then
+        [Microsoft.Web.Administration.Site] $site = Get-IISSite $testSiteNameSpaces
+        $site | Should -Not -BeNullOrEmpty
+
+        $appPool = Get-IISAppPool $testAppPoolNameSpaces
+        $appPool | Should -Not -BeNullOrEmpty
+        $appPool | Get-CaccaIISAppPoolUsername | Should -Be $testAppPoolUsernameSpaces
+
+        $site.Applications['/'].ApplicationPoolName | Should -Be $testAppPoolNameSpaces
+        $site.Applications["/"].VirtualDirectories["/"].PhysicalPath | Should -Be $sitePathSpaces
+
+        $checkAccess = {
+            $identities = (Get-Acl $_).Access.IdentityReference
+            $identities | ? { $_.Value -eq $testAppPoolUsernameSpaces } | Should -Not -BeNullOrEmpty
+        }
+
+        $sitePathSpaces | % $checkAccess
         Get-CaccaTempAspNetFilesPath | % $checkAccess
     }
 

@@ -12,7 +12,7 @@
         }
     }
     IISSecurity         = @{
-        Version    = '0.1.0'
+        Version    = '0.2.1'
         DependsOn  = 'PreferenceVariables'
         Parameters = @{
             Repository = 'christianacca-ps'

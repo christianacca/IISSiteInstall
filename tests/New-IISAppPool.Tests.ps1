@@ -1,5 +1,6 @@
 $testSiteName = 'DeleteMeSite'
 $tempAppPool = 'TestAppPool'
+$tempAppPoolSpaces = 'Test App Pool'
 
 Describe 'New-IISAppPool' -Tags Build {
 
@@ -16,11 +17,19 @@ Describe 'New-IISAppPool' -Tags Build {
         BeforeEach {
             $testLocalUser = 'PesterTestUser'
             $domainQualifiedTestLocalUser = "$($env:COMPUTERNAME)\$testLocalUser"
+            
+            # todo: Remove-CaccaIISAppPool should support deleting all pools from the pipeline in a single tran
+            # Get-IISAppPool $tempAppPool, $tempAppPoolSpaces -WA SilentlyContinue | Remove-CaccaIISAppPool
             Get-IISAppPool $tempAppPool -WA SilentlyContinue | Remove-CaccaIISAppPool
+            Get-IISAppPool $tempAppPoolSpaces -WA SilentlyContinue | Remove-CaccaIISAppPool
         }
     
         AfterEach {
-            Get-IISAppPool $tempAppPool | Remove-CaccaIISAppPool
+            # todo: Remove-CaccaIISAppPool should support deleting all pools from the pipeline in a single tran
+            # Get-IISAppPool $tempAppPool, $tempAppPoolSpaces -WA SilentlyContinue | Remove-CaccaIISAppPool
+            Get-IISAppPool $tempAppPool -WA SilentlyContinue | Remove-CaccaIISAppPool
+            Get-IISAppPool $tempAppPoolSpaces -WA SilentlyContinue | Remove-CaccaIISAppPool
+
             Get-LocalUser $testLocalUser -EA SilentlyContinue | Remove-LocalUser
         }
     
@@ -44,6 +53,15 @@ Describe 'New-IISAppPool' -Tags Build {
             
             # then
             (Get-IISAppPool $tempAppPool).Enable32BitAppOnWin64 | Should -Be $false
+        }
+    
+        It "Can use spaces in pool name" {
+            
+            # when
+            New-CaccaIISAppPool $tempAppPoolSpaces
+            
+            # then
+            Get-IISAppPool $tempAppPoolSpaces | Should -Not -BeNullOrEmpty
         }
     
         It "Can create with specific user account" {
