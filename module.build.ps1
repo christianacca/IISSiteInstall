@@ -35,7 +35,8 @@ function PublishTestResults
         {
             # Skip; publish logic defined as task in vsts build config (see .vsts-ci.yml)
         }
-        Default {
+        Default
+        {
             Write-Warning "Publish test result not implemented for build system '$($ENV:BHBuildSystem)'"
         }
     }
@@ -202,7 +203,8 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     {
         $version = $publishedVersion
     }
-    if ($version -eq $publishedVersion) {
+    if ($version -eq $publishedVersion)
+    {
         Write-Output "  Stepping [$bumpVersionType] version [$version]"
         $version = [version] (Step-Version $version -Type $bumpVersionType)
         Write-Output "  Using version: $version"
