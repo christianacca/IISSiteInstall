@@ -20,7 +20,8 @@ function Get-IISSiteHierarchyInfo
     ------
 	Site_Name            : Series5
 	App_Path             : /
-	App_PhysicalPath     : C:\inetpub\sites\Series5AppPool_Name         : Series5-AppPool
+    App_PhysicalPath     : C:\inetpub\sites\Series5
+    AppPool_Name         : Series5-AppPool
 	AppPool_IdentityType : ApplicationPoolIdentity
 	AppPool_Username     : IIS AppPool\Series5-AppPool
 
