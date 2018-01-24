@@ -32,7 +32,7 @@ function Get-IISSiteHostsFileEntry {
     
 
     #>
-    [CmdletBinding(DefaultParameterSetName = 'None')]
+    [CmdletBinding(DefaultParameterSetName = 'Name')]
     param (
         [Parameter(ValueFromPipeline, ParameterSetName = 'Name', Position = 0)]
         [ValidateNotNullOrEmpty()]
