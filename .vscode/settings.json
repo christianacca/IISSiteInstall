@@ -3,7 +3,7 @@
   "powershell.codeFormatting.openBraceOnSameLine": false,
   "powershell.codeFormatting.newLineAfterOpenBrace": true,
   "powershell.codeFormatting.preset": "Allman",
-  "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.ps1",
+  "powershell.scriptAnalysis.settingsPath": ".vscode/PSScriptAnalyzerSettings.psd1",
   "editor.formatOnSave": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 4,
