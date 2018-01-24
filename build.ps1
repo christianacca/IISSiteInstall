@@ -35,7 +35,7 @@ Import-Module PSDepend -RequiredVersion $psDependVersion
 Invoke-PSDepend -Path "$PSScriptRoot\build.depend.psd1" -Install -Import -Force
 
 Write-Output "    SUT Modules"
-Invoke-PSDepend -Path "$PSScriptRoot\test.depend.psd1" -Install -Import -Force
+Invoke-PSDepend -Path "$PSScriptRoot\test.depend.psd1" -Install -Force
 
 if (-not (Get-Item env:\BH*)) 
 {
