@@ -32,7 +32,6 @@ function Remove-IISWebsite {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     param (
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
         [string] $Name,
 
         [switch] $KeepBackConnection,

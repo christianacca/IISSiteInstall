@@ -63,7 +63,6 @@ function New-IISAppPool
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
         [string] $Name,
 
         [Parameter(ValueFromPipelineByPropertyName)]

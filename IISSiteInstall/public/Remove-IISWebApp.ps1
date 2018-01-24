@@ -37,11 +37,9 @@ function Remove-IISWebApp
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
         [string] $SiteName,
 
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
         [string] $Name,
 
         [Parameter(ValueFromPipelineByPropertyName)]
