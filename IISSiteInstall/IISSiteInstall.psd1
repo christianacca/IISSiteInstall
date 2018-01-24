@@ -12,7 +12,7 @@
 RootModule = 'IISSiteInstall.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '1.0.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@ Author = 'christianacca'
 CompanyName = ''
 
 # Copyright statement for this module
-Copyright = '(c) 2017 christianacca. All rights reserved.'
+Copyright = '(c) 2018 christianacca. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Cmdlets to install/remove IIS websites'
@@ -54,7 +54,7 @@ PowerShellVersion = '5.0'
 RequiredModules = @(
     @{ModuleName='PreferenceVariables'; ModuleVersion='1.0'; MaximumVersion = '1.999.0';}
     @{ModuleName='IISAdministration'; ModuleVersion='1.1.0.0'; MaximumVersion = '1.999.0.0';},
-    @{ModuleName='IISSecurity'; ModuleVersion='0.2.1'; MaximumVersion = '0.2.999';},
+    @{ModuleName='IISSecurity'; ModuleVersion='1.0.0'; MaximumVersion = '1.999.0';},
     @{ModuleName='HostNameUtils'; ModuleVersion='1.0.2'; MaximumVersion = '1.999.0';})
 
 # Assemblies that must be loaded prior to importing this module
@@ -102,7 +102,7 @@ PrivateData = @{
         Tags = @('IIS')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/christianacca/IISSiteInstall/blob/master/LICENSE'
 
         # A URL to the main website for this project.
         ProjectUri = 'https://github.com/christianacca/IISSiteInstall'
@@ -114,7 +114,7 @@ PrivateData = @{
         # ReleaseNotes = ''
 
         # External dependent modules of this module
-        ExternalModuleDependencies = @('PreferenceVariables', 'IISAdministration')
+        # ExternalModuleDependencies = @()
 
     } # End of PSData hashtable
 

@@ -21,22 +21,7 @@ if (-not (Get-PackageProvider | ? Name -eq nuget))
     Install-PackageProvider -Name NuGet -Force -Confirm:$false | Out-Null
 }
 
-$publishRepository = 'christianacca-ps'
-
-# Register custom PS Repo
-if (-not(Get-PSRepository -Name $publishRepository -EA SilentlyContinue))
-{
-    Write-Output "  Registering custom PS Repository '$publishRepository'"    
-    $repo = @{
-        Name                  = $publishRepository
-        SourceLocation        = "https://www.myget.org/F/$publishRepository/api/v2"
-        ScriptSourceLocation  = "https://www.myget.org/F/$publishRepository/api/v2/"
-        PublishLocation       = "https://www.myget.org/F/$publishRepository/api/v2/package"
-        ScriptPublishLocation = "https://www.myget.org/F/$publishRepository/api/v2/package/"
-        InstallationPolicy    = 'Trusted'
-    }
-    Register-PSRepository @repo
-}
+$publishRepository = 'PSGallery'
 
 # Grab nuget bits, install modules, set build variables, start build.
 Write-Output "  Install And Import Dependent Modules"

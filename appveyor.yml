@@ -8,7 +8,7 @@ clone_folder: C:\MyProjects\IISSiteInstall
 
 environment:
   NugetApiKey:
-    secure: PeAYLY8L65JcfVzZvYZ9RdTIaRBmmgPaSAnAqcJ+FWVX73Wjubx3yhD09O8jIcPF
+    secure: trkNLPbrgTCXvDZVL4HPqDqEef2HLFYpIOMnCNCpznF78eEOb64ixeiwPXpyo66l
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message 

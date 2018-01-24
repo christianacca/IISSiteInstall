@@ -7,22 +7,13 @@
     IISAdministration   = '1.1.0.0'
     HostNameUtils       = @{
         Version    = '1.0.2'
-        Parameters = @{
-            Repository = 'christianacca-ps'
-        }
     }
     IISSecurity         = @{
-        Version    = '0.2.1'
+        Version    = '1.0.0'
         DependsOn  = 'PreferenceVariables'
-        Parameters = @{
-            Repository = 'christianacca-ps'
-        }
     }
     IISConfigUnlock     = @{
-        Version    = '0.1.0'
+        Version    = '1.0.0'
         DependsOn  = @('PreferenceVariables', 'IISAdministration')
-        Parameters = @{
-            Repository = 'christianacca-ps'
-        }
     }
 }
