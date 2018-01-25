@@ -16,10 +16,6 @@ function New-IISWebsite
     - Temporary ASP.NET Files: Read 'This folder', file and subfolder permissions (inherited)
     - ModifyPaths: modify 'This folder', file and subfolder permissions (inherited)
     - ExecutePaths: read+execute file (no inherit)s
-
-    Use Xxx to grant permissions used for 'Path' to only that folder and it's files but NOT subfolders
-
-    Optionally use 
     
     .PARAMETER Name
     The name of the IIS Website to add the application to
