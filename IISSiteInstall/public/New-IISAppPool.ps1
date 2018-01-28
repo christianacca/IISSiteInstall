@@ -90,7 +90,8 @@ function New-IISAppPool
     {
         try
         {
-            
+            Write-Information "Create app pool '$Name'"
+
             if ($null -eq $Config)
             {
                 $Config = {}

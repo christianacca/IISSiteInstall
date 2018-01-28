@@ -73,6 +73,8 @@ function Set-IISAppPoolUser {
     process {
         try {
 
+            Write-Information "Assign identity of app pool '$($InputObject.Name)'"
+
             if ($IdentityType -ne 'SpecificUser') {
                 $dummyPassword = ConvertTo-SecureString 'dummy' -AsPlainText -Force
                 $username = ConvertTo-BuiltInUsername $IdentityType ($InputObject.Name)

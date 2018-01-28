@@ -144,6 +144,7 @@ function New-IISWebApp
     {
         try
         {
+            Write-Information "Create Web application '$Name' under site '$SiteName'"
 
             $SiteName = $SiteName.Trim()
             $Name = $Name.Trim()
@@ -212,6 +213,7 @@ function New-IISWebApp
 
             if ($existingApp)
             {
+                Write-Information "Existing Web application '$Name' found"
                 Remove-IISWebApp $SiteName $Name -ModifyPaths $ModifyPaths -ExecutePaths $ExecutePaths
             }
 

@@ -41,6 +41,8 @@ function Remove-IISSiteBackConnection {
     process {
         try {
 
+            Write-Information "Remove backconnection(s) from registry"
+
             $shared = $InputObject | Where-Object IsShared
             if ($shared -and !$Force) {
                 throw "Cannot remove hostname(s) - one or more entries are shared by multiple sites"

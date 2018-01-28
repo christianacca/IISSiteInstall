@@ -180,6 +180,8 @@ function New-IISWebsite
     {
         try
         {
+            Write-Information "Create website '$Name'"
+
             $Name = $Name.Trim()
             if ([string]::IsNullOrWhiteSpace($Path))
             {
@@ -226,6 +228,7 @@ function New-IISWebsite
 
             if ($existingSite)
             {
+                Write-Information "Existing website '$Name' found"
                 Remove-IISWebsite $Name -Confirm:$false
             }
 
@@ -257,11 +260,13 @@ function New-IISWebsite
                     
                     if (![string]::IsNullOrWhiteSpace($HostsFileIPAddress) -and $PSCmdlet.ShouldProcess($allHostNames, 'Add hosts file entry'))
                     {
+                        Write-Information "Add '$allHostNames' to hosts file"
                         $allHostNames | Add-TecBoxHostnames -IPAddress $HostsFileIPAddress
                     }
                     
                     if ($AddHostToBackConnections -and $PSCmdlet.ShouldProcess($allHostNames, 'Add back connection'))
                     {
+                        Write-Information "Add '$allHostNames' to backconnection registry value"
                         $allHostNames | Add-TecBoxBackConnectionHostNames
                     }
                 }
@@ -289,6 +294,8 @@ function New-IISWebsite
                 {
                     $appPoolIdentity = "IIS AppPool\$AppPoolName"
                 }
+
+                Write-Information "Granting file permissions to '$appPoolIdentity'"
                 $siteAclParams = @{
                     SitePath        = $Path
                     AppPoolIdentity = $appPoolIdentity

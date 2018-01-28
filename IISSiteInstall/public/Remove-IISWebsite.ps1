@@ -48,8 +48,10 @@ function Remove-IISWebsite {
     
     process {
         try {
+
+            Write-Information "Remove Website '$Name'"
+
             $Name = $Name.Trim()
-            
 
             # note: this will produce a warning if site does not exist (this is the desire behaviour - no need to reproduce here)
             $siteInfo = Get-IISSiteHierarchyInfo $Name

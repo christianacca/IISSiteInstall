@@ -61,6 +61,8 @@ function Remove-IISWebApp
     {
         try
         {
+            Write-Information "Remove Web application '$Name'"
+
             $SiteName = $SiteName.Trim()
             $Name = $Name.Trim()
     

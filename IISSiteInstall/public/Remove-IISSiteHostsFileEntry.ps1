@@ -41,6 +41,8 @@ function Remove-IISSiteHostsFileEntry {
     process {
         try {
 
+            Write-Information "Remove host name(s) from hosts file"
+
             $shared = $InputObject | Where-Object IsShared
             if ($shared -and !$Force) {
                 throw "Cannot remove hostname(s) - one or more entries are shared by multiple sites"

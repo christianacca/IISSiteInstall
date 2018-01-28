@@ -69,6 +69,8 @@ function Remove-IISAppPool {
     process {
         try {
 
+            Write-Information "Remove app pool '$Name'"
+
             [Microsoft.Web.Administration.ServerManager] $manager = Get-IISServerManager
 
             $pool = if ($InputObject) {
