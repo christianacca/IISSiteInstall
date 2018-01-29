@@ -1,8 +1,4 @@
-﻿$projectRoot = Resolve-Path "$PSScriptRoot\.."
-$modulePath = Resolve-Path "$projectRoot\*\*.psd1"
-$moduleRoot = Split-Path $modulePath
-
-$moduleName = $env:BHProjectName
+$script:ModuleName = $env:BHProjectName
 $moduleRoot = $env:BHModulePath
 
 Describe "PSScriptAnalyzer rule-sets" -Tag Build {
@@ -11,15 +7,25 @@ Describe "PSScriptAnalyzer rule-sets" -Tag Build {
     $Rules = Get-ScriptAnalyzerRule | where RuleName -NotIn $rulesToExclude
     $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse | where fullname -notmatch 'classes'
 
-    foreach ( $Script in $scripts ) 
+    foreach ( $Script in $scripts )
     {
         Context "Script '$($script.FullName)'" {
-
-            foreach ( $rule in $rules )
+            $results = Invoke-ScriptAnalyzer -Path $script.FullName -includeRule $Rules
+            if ($results)
             {
-                It "Rule [$rule]" {
+                foreach ($rule in $results)
+                {
+                    It $rule.RuleName {
+                        $message = "{0} Line {1}: {2}" -f $rule.Severity, $rule.Line, $rule.message
+                        $message | Should Be ""
+                    }
 
-                    (Invoke-ScriptAnalyzer -Path $script.FullName -IncludeRule $rule.RuleName ).Count | Should Be 0
+                }
+            }
+            else
+            {
+                It "Should not fail any rules" {
+                    $results | Should BeNullOrEmpty
                 }
             }
         }
