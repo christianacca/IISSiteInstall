@@ -6,7 +6,7 @@
     PreferenceVariables = '1.0'
     IISAdministration   = '1.1.0.0'
     HostNameUtils       = @{
-        Version    = '1.0.2'
+        Version    = '1.2.0'
     }
     IISSecurity         = @{
         Version    = '1.1.0'
