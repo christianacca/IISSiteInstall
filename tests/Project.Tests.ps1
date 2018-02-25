@@ -3,7 +3,7 @@ $moduleRoot = $env:BHModulePath
 
 Describe "PSScriptAnalyzer rule-sets" -Tag Build {
 
-    $rulesToExclude = @('PSUseToExportFieldsInManifest')
+    $rulesToExclude = @('PSUseToExportFieldsInManifest', 'PSShouldProcess', 'PSAvoidUsingPositionalParameters')
     $Rules = Get-ScriptAnalyzerRule | where RuleName -NotIn $rulesToExclude
     $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse | where fullname -notmatch 'classes'
 
@@ -32,14 +32,33 @@ Describe "PSScriptAnalyzer rule-sets" -Tag Build {
     }
 }
 
+Describe "General project validation: $moduleName"  -Tag Build, Unit {
 
-Describe "General project validation: $moduleName" -Tags Build {
+    $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse
 
-    AfterAll {
-        Unload-SUT
+    # TestCases are splatted to the script so we need hashtables
+    $testCase = $scripts | Foreach-Object {@{file = $_}}         
+    It "Script <file> should be valid powershell" -TestCases $testCase {
+        param($file)
+
+        $file.fullname | Should Exist
+
+        $contents = Get-Content -Path $file.fullname -ErrorAction Stop
+        $errors = $null
+        $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
+        $errors.Count | Should Be 0
     }
 
-    It "Module '$moduleName' can import cleanly" {
-        {Import-Module ($global:SUTPath) -force } | Should Not Throw
+    It "Module '$moduleName' auto-imports dependencies" {
+        # given
+        # Ensure module and it's dependencies NOT already loaded into memory
+        Unload-SUT
+
+        # when / then
+        {Import-Module ($global:SUTPath) } | Should Not Throw
+        Get-Module IISAdministration | Should -Not -Be $null
+        Get-Module PreferenceVariables | Should -Not -Be $null
+        Get-Module IISSecurity | Should -Not -Be $null
+        Get-Module HostNameUtils | Should -Not -Be $null
     }
 }
