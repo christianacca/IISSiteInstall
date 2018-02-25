@@ -14,6 +14,25 @@ $sitePathSpaces = "C:\inetpub\sites\$testSiteNameSpaces"
 
 Describe 'New-IISWebsite' -Tags Build {
 
+    function CheckHasAccess
+    {
+        param(
+            [Parameter(ValueFromPipeline)]
+            [string] $Path,
+            [string] $Username
+        )
+
+        process {
+            $domainQualifiedUsername = if ($Username.Contains('\')) {
+                $Username
+            } else {
+                "$($env:COMPUTERNAME)\$Username"
+            }
+    
+            $identities = (Get-Acl $Path).Access.IdentityReference
+            $identities | ? { $_.Value -eq $domainQualifiedUsername } | Should -Not -BeNullOrEmpty
+        }
+    }
     function Cleanup {
         Reset-IISServerManager -Confirm:$false
         $siteToDelete = @(Get-IISSite $testSiteName, $testSiteNameSpaces -WA SilentlyContinue)
@@ -55,13 +74,8 @@ Describe 'New-IISWebsite' -Tags Build {
         $site.Applications['/'].ApplicationPoolName | Should -Be $testAppPoolName
         $site.Applications["/"].VirtualDirectories["/"].PhysicalPath | Should -Be $sitePath
 
-        $checkAccess = {
-            $identities = (Get-Acl $_).Access.IdentityReference
-            $identities | ? { $_.Value -eq $testAppPoolUsername } | Should -Not -BeNullOrEmpty
-        }
-
-        $sitePath | % $checkAccess
-        Get-CaccaTempAspNetFilesPath | % $checkAccess
+        $sitePath | CheckHasAccess -Username $testAppPoolUsername
+        Get-CaccaTempAspNetFilesPath | CheckHasAccess -Username $testAppPoolUsername
     }
     
     It "-Name (with spaces)" {
@@ -79,13 +93,8 @@ Describe 'New-IISWebsite' -Tags Build {
         $site.Applications['/'].ApplicationPoolName | Should -Be $testAppPoolNameSpaces
         $site.Applications["/"].VirtualDirectories["/"].PhysicalPath | Should -Be $sitePathSpaces
 
-        $checkAccess = {
-            $identities = (Get-Acl $_).Access.IdentityReference
-            $identities | ? { $_.Value -eq $testAppPoolUsernameSpaces } | Should -Not -BeNullOrEmpty
-        }
-
-        $sitePathSpaces | % $checkAccess
-        Get-CaccaTempAspNetFilesPath | % $checkAccess
+        $sitePathSpaces | CheckHasAccess -Username $testAppPoolUsernameSpaces
+        Get-CaccaTempAspNetFilesPath | CheckHasAccess -Username $testAppPoolUsernameSpaces
     }
 
     It "-Path" {
@@ -96,8 +105,7 @@ Describe 'New-IISWebsite' -Tags Build {
         [Microsoft.Web.Administration.Site] $site = Get-IISSite $testSiteName
         $site | Should -Not -BeNullOrEmpty
         $site.Applications['/'].VirtualDirectories['/'].PhysicalPath | Should -Be $tempSitePath
-        $identities = (Get-Acl $tempSitePath).Access.IdentityReference
-        $identities | ? Value -eq $testAppPoolUsername | Should -Not -BeNullOrEmpty
+        $tempSitePath | CheckHasAccess -Username $testAppPoolUsername
     }
 
     It "-Config" {
@@ -157,10 +165,7 @@ Describe 'New-IISWebsite' -Tags Build {
         & {
             $tempSitePath
             Get-CaccaTempAspNetFilesPath
-        } | % {
-            $identities = (Get-Acl $_).Access.IdentityReference
-            $identities | ? { $_.Value -eq $domainQualifiedTestLocalUser } | Should -Not -BeNullOrEmpty
-        }        
+        } | CheckHasAccess -Username $domainQualifiedTestLocalUser     
     }
 
     It "-AppPoolConfig" {
