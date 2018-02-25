@@ -266,10 +266,11 @@ function New-IISWebApp
                     $appPoolIdentity = "IIS AppPool\$AppPoolName"
                 }
                 $appAclParams = @{
-                    AppPath         = $childPath
-                    AppPoolIdentity = $appPoolIdentity
-                    ModifyPaths     = $ModifyPaths
-                    ExecutePaths    = $ExecutePaths
+                    AppPath           = $childPath
+                    AppPoolIdentity   = $appPoolIdentity
+                    ModifyPaths       = $ModifyPaths
+                    ExecutePaths      = $ExecutePaths
+                    CreateMissingPath = $true
                 }
                 Set-CaccaIISSiteAcl @appAclParams
             }
