@@ -9,7 +9,7 @@
         Version    = '1.2.0'
     }
     IISSecurity         = @{
-        Version    = '1.2.0'
+        Version    = '1.3.0'
         DependsOn  = 'PreferenceVariables'
     }
     IISConfigUnlock     = @{

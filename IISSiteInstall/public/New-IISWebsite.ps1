@@ -297,11 +297,12 @@ function New-IISWebsite
 
                 Write-Information "Granting file permissions to '$appPoolIdentity'"
                 $siteAclParams = @{
-                    SitePath        = $Path
-                    AppPoolIdentity = $appPoolIdentity
-                    ModifyPaths     = $ModifyPaths
-                    ExecutePaths    = $ExecutePaths
-                    SiteShellOnly   = $SiteShellOnly
+                    SitePath          = $Path
+                    AppPoolIdentity   = $appPoolIdentity
+                    ModifyPaths       = $ModifyPaths
+                    ExecutePaths      = $ExecutePaths
+                    SiteShellOnly     = $SiteShellOnly
+                    CreateMissingPath = $true
                 }
                 Set-CaccaIISSiteAcl @siteAclParams
             }

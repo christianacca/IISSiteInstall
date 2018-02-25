@@ -108,6 +108,15 @@ Describe 'New-IISWebsite' -Tags Build {
         $tempSitePath | CheckHasAccess -Username $testAppPoolUsername
     }
 
+    It "-ModifyPaths" {
+        # when
+        New-CaccaIISWebsite $testSiteName $tempSitePath -ModifyPaths 'App_Data', 'SomeApp\logs'
+
+        # then
+        Join-Path $tempSitePath 'App_Data' | CheckHasAccess -Username $testAppPoolUsername
+        Join-Path $tempSitePath 'SomeApp\logs' | CheckHasAccess -Username $testAppPoolUsername
+    }
+
     It "-Config" {
         # given
         [Microsoft.Web.Administration.Site] $siteArg = $null
