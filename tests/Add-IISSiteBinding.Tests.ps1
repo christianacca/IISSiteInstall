@@ -1,26 +1,6 @@
 Describe 'Add-IISSiteBinding' -Tag Build {
 
-    $script:sitesToRemove = @()
-
-    function New-SiteName
-    {
-        (New-Guid).ToString().Substring(0, 5)
-    }
-
-    function CreateTestSite 
-    {
-        param(
-            [string] $Path,
-            [string] $Name,
-            [string] $BindingInformation
-        )
-
-        $sitePath = Join-Path $Path $Name
-        New-Item $sitePath -ItemType Directory | Out-Null
-        New-IISSite $Name $sitePath -BindingInformation $BindingInformation | Out-Null
-
-        $script:sitesToRemove += $Name
-    }
+    . "$PSScriptRoot\TestHelpers.ps1"
 
     function GetBindings 
     {
@@ -30,11 +10,6 @@ Describe 'Add-IISSiteBinding' -Tag Build {
         foreach($item in $list) {
             $item
         }
-    }
-    function Cleanup 
-    {
-        $script:sitesToRemove | Remove-IISSite -WA Ignore -Confirm:$false
-        $script:sitesToRemove = @()
     }
 
     BeforeAll {
@@ -52,7 +27,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
 
             # given
             $siteName = New-SiteName
-            CreateTestSite -Path $TestDrive -Name $siteName -BindingInformation '*:7070:'
+            CreateTestSite -Name $siteName -BindingInformation '*:7070:'
 
             # when
             Add-CaccaIISSiteBinding $siteName 7080
@@ -73,7 +48,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
 
             # given
             $siteName = New-SiteName
-            CreateTestSite -Path $TestDrive -Name $siteName -BindingInformation "172.30.32.1:7070:$siteName"
+            CreateTestSite -Name $siteName -BindingInformation "172.30.32.1:7070:$siteName"
 
             # when
             Add-CaccaIISSiteBinding $siteName 7080
@@ -94,7 +69,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
 
             # given
             $siteName = New-SiteName
-            CreateTestSite -Path $TestDrive -Name $siteName -BindingInformation "*:7070:"
+            CreateTestSite -Name $siteName -BindingInformation "*:7070:"
 
             # when
             Add-CaccaIISSiteBinding $siteName 7070
@@ -115,7 +90,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
 
             # given
             $siteName = New-SiteName
-            CreateTestSite -Path $TestDrive -Name $siteName -BindingInformation "172.30.32.1:8080:$siteName"
+            CreateTestSite -Name $siteName -BindingInformation "172.30.32.1:8080:$siteName"
             New-IISSiteBinding $siteName "172.30.32.1:8090:$siteName"
             New-IISSiteBinding $siteName "172.30.32.1:8060:blah"
 
@@ -143,7 +118,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
 
             # given
             $siteName = New-SiteName
-            CreateTestSite -Path $TestDrive -Name $siteName -BindingInformation "172.30.32.1:8080:$siteName"
+            CreateTestSite -Name $siteName -BindingInformation "172.30.32.1:8080:$siteName"
             New-IISSiteBinding $siteName "172.30.32.1:7070:$siteName"
             New-IISSiteBinding $siteName "172.30.32.1:8060:blah"
 
