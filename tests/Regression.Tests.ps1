@@ -1,4 +1,4 @@
-Describe "Regression tests" -Tag Build {
+Describe 'Regression tests' -Tag Build {
 
     BeforeAll {
         Unload-SUT
@@ -9,7 +9,7 @@ Describe "Regression tests" -Tag Build {
         Unload-SUT
     }
 
-    Context "Github Issues" {
+    Context 'Github Issues' {
        
     }
 }
