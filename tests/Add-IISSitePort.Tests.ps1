@@ -1,4 +1,4 @@
-Describe 'Add-IISSiteBinding' -Tag Build {
+Describe 'Add-IISSitePort' -Tag Build {
 
     . "$PSScriptRoot\TestHelpers.ps1"
 
@@ -30,7 +30,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
             CreateTestSite -Name $siteName -BindingInformation '*:7070:'
 
             # when
-            Add-CaccaIISSiteBinding $siteName 7080
+            Add-CaccaIISSitePort $siteName 7080
         }
 
         AfterAll {
@@ -51,7 +51,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
             CreateTestSite -Name $siteName -BindingInformation "172.30.32.1:7070:$siteName"
 
             # when
-            Add-CaccaIISSiteBinding $siteName 7080
+            Add-CaccaIISSitePort $siteName 7080
         }
 
         AfterAll {
@@ -72,7 +72,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
             CreateTestSite -Name $siteName -BindingInformation "*:7070:"
 
             # when
-            Add-CaccaIISSiteBinding $siteName 7070
+            Add-CaccaIISSitePort $siteName 7070
         }
 
         AfterAll {
@@ -95,7 +95,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
             New-IISSiteBinding $siteName "172.30.32.1:8060:blah"
 
             # when
-            Add-CaccaIISSiteBinding $siteName 7070
+            Add-CaccaIISSitePort $siteName 7070
         }
 
         AfterAll {
@@ -123,7 +123,7 @@ Describe 'Add-IISSiteBinding' -Tag Build {
             New-IISSiteBinding $siteName "172.30.32.1:8060:blah"
 
             # when
-            Add-CaccaIISSiteBinding $siteName 7070
+            Add-CaccaIISSitePort $siteName 7070
         }
 
         AfterAll {

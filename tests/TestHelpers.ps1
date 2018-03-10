@@ -31,5 +31,5 @@ function CreateTestSite
 
 function New-SiteName
 {
-    (New-Guid).ToString().Substring(0, 5)
+     'PS-{0}' -f (Get-Random -Minimum 100 -Maximum 1000000).ToString()
 }

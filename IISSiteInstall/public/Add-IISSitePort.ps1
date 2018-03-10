@@ -1,4 +1,4 @@
-function Add-IISSiteBinding
+function Add-IISSitePort
 {
     <#
     .SYNOPSIS
@@ -14,7 +14,7 @@ function Add-IISSiteBinding
     Port number to add
 
     .EXAMPLE
-    Add-CaccaIISSiteBinding Series5 -Port 8080
+    Add-CaccaIISSitePort Series5 -Port 8080
     
     .NOTES
     The port number will be skipped for each existing endpoint that already binds that port
