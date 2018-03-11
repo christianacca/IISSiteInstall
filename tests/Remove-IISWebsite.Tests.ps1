@@ -42,8 +42,6 @@ Describe 'Remove-IISWebsite' -Tags Build {
 
             # when
             Remove-CaccaIISWebsite $testSiteName -Confirm:$false
-
-            Reset-IISServerManager -Confirm:$false
         }
 
         AfterAll {
@@ -74,6 +72,32 @@ Describe 'Remove-IISWebsite' -Tags Build {
 
     }
 
+    Context "Site has been modified before function called" {
+
+        BeforeAll {
+            Cleanup
+
+            # given...
+
+            New-CaccaIISWebsite $testSiteName $TestDrive -AppPoolName $testAppPool
+
+            # modify site via another instanace of ServerManager
+            [Microsoft.Web.Administration.ServerManager] $manager = [Microsoft.Web.Administration.ServerManager]::new()
+            [Microsoft.Web.Administration.Site] $site = $manager.Sites[$testSiteName]
+            $site.Bindings.Add('*:8090:series5', 'http')
+            $manager.CommitChanges()
+        }
+
+        AfterAll {
+            Cleanup
+        }
+
+        It 'Should not throw' {
+            # when
+            & { Remove-CaccaIISWebsite $testSiteName -Confirm:$false -EA Stop; $true } | Should -Be $true
+        }
+    }
+
     Context "Site only, specific user assigned as AppPool identity" {
         
         BeforeAll {
@@ -94,8 +118,6 @@ Describe 'Remove-IISWebsite' -Tags Build {
 
             # when
             Remove-CaccaIISWebsite $testSiteName -Confirm:$false
-        
-            Reset-IISServerManager -Confirm:$false
         }
         
         AfterAll {
