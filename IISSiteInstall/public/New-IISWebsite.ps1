@@ -182,6 +182,10 @@ function New-IISWebsite
         {
             Write-Information "Create website '$Name'"
 
+            # reload the ServerManager instance inside of the IISAdministration module so as to avoid
+            # concurrency failures where changes have been made via IIS Manager
+            Reset-IISServerManager -Confirm:$false
+
             $Name = $Name.Trim()
             if ([string]::IsNullOrWhiteSpace($Path))
             {

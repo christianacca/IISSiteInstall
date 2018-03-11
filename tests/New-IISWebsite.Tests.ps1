@@ -97,6 +97,18 @@ Describe 'New-IISWebsite' -Tags Build {
         Get-CaccaTempAspNetFilesPath | CheckHasAccess -Username $testAppPoolUsernameSpaces
     }
 
+    It "IIS config has been modified before function called" {
+        # given
+        New-CaccaIISWebsite $testSiteName
+        [Microsoft.Web.Administration.ServerManager] $manager = [Microsoft.Web.Administration.ServerManager]::new()
+        [Microsoft.Web.Administration.Site] $site = $manager.Sites[$testSiteName]
+        $manager.Sites.Remove($site)
+        $manager.CommitChanges()
+
+        # when, then (should not throw)
+        & { New-CaccaIISWebsite $testSiteNameSpaces -EA Stop | Out-Null; $true } | Should -Be $true
+    }
+
     It "-Path" {
         # when
         New-CaccaIISWebsite $testSiteName $tempSitePath
