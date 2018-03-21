@@ -10,7 +10,7 @@ InModuleScope $moduleName {
         . "$PSScriptRoot\TestHelpers.ps1"
         AfterAll { Unload-SUT }
 
-        Mock Restart-AppPool
+        Mock Restart-IISAppPool
 
         Context 'Site missing' {
 
@@ -47,7 +47,7 @@ InModuleScope $moduleName {
     
             It 'Should recycle the app pool belonging to site' {
                 # then
-                Assert-MockCalled Restart-AppPool -Exactly 1 `
+                Assert-MockCalled Restart-IISAppPool -Exactly 1 `
                     -ParameterFilter { $Name -eq "$siteName-AppPool" }
             }
         }
@@ -87,7 +87,7 @@ InModuleScope $moduleName {
                 Restart-CaccaIISSiteAppPool $siteName -WhatIf
 
                 # then
-                Assert-MockCalled Restart-AppPool -Exactly 0
+                Assert-MockCalled Restart-IISAppPool -Exactly 0
             }
     
             It 'Should recycle the app pools belonging to site and child applications' {
@@ -95,7 +95,7 @@ InModuleScope $moduleName {
                 Restart-CaccaIISSiteAppPool $siteName
 
                 # then
-                Assert-MockCalled Restart-AppPool -Exactly 3
+                Assert-MockCalled Restart-IISAppPool -Exactly 3
             }
         }
         
@@ -143,8 +143,8 @@ InModuleScope $moduleName {
                 Restart-CaccaIISSiteAppPool $site1Name -Force
 
                 # then
-                Assert-MockCalled Restart-AppPool -Exactly 2
-                Assert-MockCalled Restart-AppPool -Exactly 0 `
+                Assert-MockCalled Restart-IISAppPool -Exactly 2
+                Assert-MockCalled Restart-IISAppPool -Exactly 0 `
                     -ParameterFilter { $Name -eq $site2Name }
             }
         }

@@ -64,7 +64,7 @@ function Restart-IISSiteAppPool
                 $poolName = $_
                 Write-Information "Recycle app pool '$poolName' for site '$Name'"
                 if ($PSCmdlet.ShouldProcess($poolName, 'Recycle App pool')) {
-                    Restart-AppPool $poolName
+                    Restart-IISAppPool $poolName
                 }
             }
         }

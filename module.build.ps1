@@ -142,6 +142,13 @@ Task UnitTests {
 
 Task RemoveDefaultWebsite -Before UnitTests {
     Remove-IISSite 'Default Web Site' -WarningAction SilentlyContinue -Confirm:$false
+    $defaultAppPool = Get-IISAppPool DefaultAppPool
+    if ($defaultAppPool) {
+        $manager = Get-IISServerManager
+        $manager.ApplicationPools.Remove($defaultAppPool)
+        $manager.CommitChanges()
+        Reset-IISServerManager -Confirm:$false
+    }
 }
 Task FullTests {
     $TestResults = Invoke-Pester -Path Tests -PassThru -OutputFormat NUnitXml -OutputFile $testFile -Tag Build
