@@ -13,8 +13,25 @@ function Restart-IISSiteAppPool
     .PARAMETER Force
     Restart the pool even if it's assigned to more than one Site
 
+    .PARAMETER MaximumWait
+    The maximum time in seconds to wait on the old w3p to stop before relinquishing 
+    control back to the powershell host.
+    
+    If not supplied, wait time is determined by taking the maximum configured 
+    Shutdown Time Limit for all the pools supplied.
+    
+    .PARAMETER Wait
+    Wait for the old w3p process servicing the app pool to stop?
+
     .EXAMPLE
-    Restart-CaccaIISSiteAppPool Series5
+    Restart-CaccaIISSiteAppPool Series5 -Wait
+    Write-Information 'Done recycling pools'
+
+    Description
+    -----------
+    Recycles the AppPool(s) assigned to Series5 website and it's child applications.
+    Waits for the old w3p process servicing the pools to stop before writing the
+    message 'Done recycling pools'
     
     .NOTES
     Exception thrown when:
@@ -24,7 +41,9 @@ function Restart-IISSiteAppPool
     param (
         [Parameter(Mandatory, ValueFromPipeline)]
         [string] $Name,
-        [switch] $Force
+        [switch] $Force,
+        [int] $MaximumWait,
+        [switch] $Wait
     )
     
     begin
@@ -64,7 +83,7 @@ function Restart-IISSiteAppPool
                 $poolName = $_
                 Write-Information "Recycle app pool '$poolName' for site '$Name'"
                 if ($PSCmdlet.ShouldProcess($poolName, 'Recycle App pool')) {
-                    Restart-IISAppPool $poolName
+                    Restart-IISAppPool $poolName -Wait:$Wait -MaximumWait $MaximumWait
                 }
             }
         }
