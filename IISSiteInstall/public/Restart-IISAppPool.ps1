@@ -79,17 +79,21 @@ function Restart-IISAppPool
 
             $appPools = $appPoolNames | Select-Object -Unique | ForEach-Object {
                 $pool = Get-IISAppPool $_ -WA SilentlyContinue
-                $processId = $pool | Select-Object -Exp WorkerProcesses -EA Ignore | Select-Object -Exp ProcessId
                 [PsCustomObject] @{
                     Name = $_
                     Pool = $pool
-                    ProcessId = $processId
                 }
             }
 
             $missingPools = $appPools | Where-Object { $null -eq $_.Pool } | Select-Object -Exp Name -Unique
             if ($missingPools) {
                 throw "Cannot recycle app pool(s); app pools '$missingPools' missing"
+            }
+
+            $processIds = if ($Wait) {
+                $appPools.Pool | Select-Object -Exp WorkerProcesses -EA Ignore | Select-Object -Exp ProcessId -Unique
+            } else {
+                $null
             }
 
             $waitSeconds = if ($Wait) {
@@ -116,8 +120,7 @@ function Restart-IISAppPool
                 }
             }
 
-            if ($waitSeconds -gt 0 -and !$WhatIfPreference) {
-                $processIds = $appPools | Select-Object -Exp ProcessId -Unique
+            if ($processIds -and $waitSeconds -gt 0 -and !$WhatIfPreference) {
                 Write-Verbose "Waiting for app pool(s) to shutdown"
                 Write-Verbose "Max wait time of $waitSeconds"
                 $timeout = (Get-Date).AddSeconds($waitSeconds)
